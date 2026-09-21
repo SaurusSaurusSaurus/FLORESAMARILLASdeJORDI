@@ -1,40 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" href="img/flowers.png" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="img/flowers.png" type="image/x-icon" />
     <title>Flowers</title>
-</head>
+    <style>
+      /* Asegura que toda la pantalla sea interactiva como una carta virtual */
+      body {
+        cursor: pointer;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
     <div class="greetings">
-        <span>H</span>
-        <span>o</span>
-        <span>l</span>
-        <span>a</span>
-        <span>,</span>
-        <span>A</span>
-        <span>r</span>
-        <span>a</span>
-        <span>c</span>
-        <span>e</span>
-        <span>l</span>
-        <span>i</span>
-
+      <span>H</span><span>o</span><span>l</span><span>a</span><span>,</span>
+      <span>A</span><span>r</span><span>a</span><span>c</span><span>e</span
+      ><span>l</span><span>i</span>
     </div>
+
     <div class="description">
-        <span>HICE ESTE PEQUEÑO DETALLE ES PARA TI :)</span>
+      <span>HICE ESTE PEQUEÑO DETALLE ES PARA TI :)</span>
     </div>
+
+    <div class="audio-container">
+      <!-- Mantenemos la ruta exacta de tu archivo de música -->
+      <audio src="sound/ChristianBasso&HaienQiu-Flowers.mp3" autoplay></audio>
+    </div>
+
     <div class="button">
-        <button class="botones">
-            <a href="flower.html" style="color: #fff;">HAZ CLICK AQUÍ</a>
-        </button>
+      <button class="botones" style="pointer-events: none">
+        <a href="#" style="color: #fff; text-decoration: none"
+          >HAZ CLICK AQUÍ</a
+        >
+      </button>
     </div>
 
-</body>
+    <script>
+      let interactuado = false;
+      const NEXT_PAGE = "flower.html"; // Tu página de destino con las flores animadas
 
+      function iniciarDetalle() {
+        if (interactuado) return;
+        interactuado = true;
+
+        const music = document.getElementById("bgMusic");
+
+        if (music) {
+          music.volume = 0;
+          const playPromise = music.play();
+
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch((err) =>
+              console.log("Audio bloqueado temporalmente:", err),
+            );
+          }
+
+          // Efecto de fade-in gradual idéntico al ejemplo para evitar restricciones del navegador
+          let v = 0;
+          const fadeIn = setInterval(() => {
+            v = Math.min(1, v + 0.05);
+            music.volume = v;
+            if (v >= 1) clearInterval(fadeIn);
+          }, 60);
+        }
+
+        // Redirige de inmediato a flower.html con el audio ya desbloqueado y activo
+        setTimeout(() => {
+          window.location.href = NEXT_PAGE;
+        }, 300);
+      }
+
+      /* Escucha cualquier toque en la pantalla o en el botón para activar todo al instante */
+      document.body.addEventListener("click", iniciarDetalle);
+      document.body.addEventListener("touchstart", iniciarDetalle);
+    </script>
+  </body>
 </html>
